@@ -10,8 +10,10 @@ import {
 import { PartiesService } from './parties.service';
 import { CreatePartyDto } from './dto/create-party.dto';
 import { UpdatePartyDto } from './dto/update-party.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('parties')
+@ApiTags('parties')
 export class PartiesController {
   constructor(private readonly partiesService: PartiesService) {}
 
@@ -27,16 +29,16 @@ export class PartiesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.partiesService.findOne(+id);
+    return this.partiesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePartyDto: UpdatePartyDto) {
-    return this.partiesService.update(+id, updatePartyDto);
+    return this.partiesService.update(id, updatePartyDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.partiesService.remove(+id);
+    return this.partiesService.remove(id);
   }
 }

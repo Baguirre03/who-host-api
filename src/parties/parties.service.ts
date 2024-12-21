@@ -8,22 +8,25 @@ export class PartiesService {
   constructor(private prisma: PrismaService) {}
 
   create(createPartyDto: CreatePartyDto) {
-    return 'This action adds a new party';
+    return this.prisma.party.create({ data: createPartyDto });
   }
 
   findAll() {
-    return 'returns all ';
+    return this.prisma.party.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} party`;
+  findOne(id: string) {
+    return this.prisma.party.findUnique({ where: { id } });
   }
 
-  update(id: number, updatePartyDto: UpdatePartyDto) {
-    return `This action updates a #${id} party`;
+  update(id: string, updatePartyDto: UpdatePartyDto) {
+    return this.prisma.party.update({
+      where: { id },
+      data: updatePartyDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} party`;
+  remove(id: string) {
+    return this.prisma.party.delete({ where: { id } });
   }
 }
