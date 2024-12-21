@@ -22,16 +22,16 @@ model User {
 }
 
 model Party {
-  id          String      @id @default(uuid())
+  id          String       @id @default(uuid())
   name        String
   description String?
   time        DateTime
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   hostId      String
-  status      PartyStatus @default(PLANNING)
-  host        User        @relation("PartyHost", fields: [hostId], references: [id])
-  members     User[]      @relation("PartyMembers")
+  status      PartyStatus? @default(PLANNING)
+  host        User         @relation("PartyHost", fields: [hostId], references: [id])
+  members     User[]       @relation("PartyMembers")
 }
 
 enum PartyStatus {

@@ -23,6 +23,6 @@ export class CreatePartyDto {
   @ApiProperty()
   hostId: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   status: $Enums.PartyStatus;
 }
