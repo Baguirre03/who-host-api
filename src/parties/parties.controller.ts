@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { PartiesService } from './parties.service';
 import { CreatePartyDto } from './dto/create-party.dto';
@@ -20,31 +21,41 @@ export class PartiesController {
 
   @Post()
   @ApiCreatedResponse({ type: PartyEntity })
-  create(@Body() createPartyDto: CreatePartyDto) {
-    return this.partiesService.create(createPartyDto);
+  async create(@Body() createPartyDto: CreatePartyDto) {
+    return new PartyEntity(await this.partiesService.create(createPartyDto));
   }
 
   @Get()
   @ApiOkResponse({ type: PartyEntity, isArray: true })
-  findAll() {
-    return this.partiesService.findAll();
+  async findAll() {
+    const parties = await this.partiesService.findAll();
+    return parties.map((party) => new PartyEntity(party));
   }
 
   @Get(':id')
   @ApiOkResponse({ type: PartyEntity })
-  findOne(@Param('id') id: string) {
-    return this.partiesService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const party = await this.partiesService.findOne(id);
+    if (!party) {
+      throw new NotFoundException(`Party with ID: ${id} does note exist`);
+    }
+    return new PartyEntity(party);
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: PartyEntity })
-  update(@Param('id') id: string, @Body() updatePartyDto: UpdatePartyDto) {
-    return this.partiesService.update(id, updatePartyDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updatePartyDto: UpdatePartyDto,
+  ) {
+    return new PartyEntity(
+      await this.partiesService.update(id, updatePartyDto),
+    );
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: PartyEntity })
-  remove(@Param('id') id: string) {
-    return this.partiesService.remove(id);
+  async remove(@Param('id') id: string) {
+    return new PartyEntity(await this.partiesService.remove(id));
   }
 }

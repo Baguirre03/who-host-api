@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { $Enums, Party } from '@prisma/client';
+import { $Enums, Party, User } from '@prisma/client';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 export class PartyEntity implements Party {
   @ApiProperty()
@@ -25,6 +26,22 @@ export class PartyEntity implements Party {
 
   @ApiProperty()
   status: $Enums.PartyStatus;
+
+  @ApiProperty({ required: false, type: UserEntity })
+  host?: UserEntity;
+
+  @ApiProperty()
+  members: Array<UserEntity>;
+
+  constructor({ host, members, ...data }: Partial<PartyEntity>) {
+    Object.assign(this, data);
+    if (host) {
+      this.host = new UserEntity(host);
+    }
+    if (members.length) {
+      this.members.map((member) => new UserEntity(member));
+    }
+  }
 }
 
 /* 

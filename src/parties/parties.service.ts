@@ -16,7 +16,10 @@ export class PartiesService {
   }
 
   findOne(id: string) {
-    return this.prisma.party.findUnique({ where: { id } });
+    return this.prisma.party.findUnique({
+      where: { id },
+      include: { host: true, members: true },
+    });
   }
 
   update(id: string, updatePartyDto: UpdatePartyDto) {
