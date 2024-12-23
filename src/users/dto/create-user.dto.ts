@@ -42,12 +42,12 @@ export class CreateUserDto {
   longitude: number;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
   createdAt: Date;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
   updatedAt: Date;
 
