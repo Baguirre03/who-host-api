@@ -27,11 +27,11 @@ export class PartyEntity implements Party {
   @ApiProperty()
   status: $Enums.PartyStatus;
 
-  @ApiProperty({ required: false, type: UserEntity })
+  @ApiProperty({ type: UserEntity }) å;
   host?: UserEntity;
 
-  @ApiProperty()
-  members: Array<UserEntity>;
+  @ApiProperty({ required: false, type: Array })
+  members: Array<UserEntity> | null;
 
   constructor({ host, members, ...data }: Partial<PartyEntity>) {
     Object.assign(this, data);
