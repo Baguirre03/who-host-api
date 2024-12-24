@@ -14,6 +14,7 @@ async function bootstrap() {
     .setTitle("Who's Host")
     .setDescription("API for project Who's Host Project")
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

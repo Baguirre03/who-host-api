@@ -22,7 +22,11 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.password) {
+      updateUserDto.password = await encodePassword(updateUserDto.password);
+    }
+
     return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
