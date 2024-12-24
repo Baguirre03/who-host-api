@@ -6,15 +6,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from 'src/users/users.module';
-import { UsersService } from 'src/users/users.service';
-
-// temporary secret
-/* 
-In a real application, you should never store the 
-secret directly in your codebase. NestJS provides the @nestjs/config 
-package for loading secrets from environment variables. 
-You can read more about it in the official documentation.
-*/
 
 export const jwtSecret = process.env.JWT_SECRET;
 
@@ -24,7 +15,7 @@ export const jwtSecret = process.env.JWT_SECRET;
     PassportModule,
     JwtModule.register({
       secret: jwtSecret,
-      signOptions: { expiresIn: '5m' }, // e.g. 30s, 7d, 24h
+      signOptions: { expiresIn: '20m' }, // e.g. 30s, 7d, 24h
     }),
     UsersModule,
   ],
