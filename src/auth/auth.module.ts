@@ -16,7 +16,7 @@ package for loading secrets from environment variables.
 You can read more about it in the official documentation.
 */
 
-export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
+export const jwtSecret = process.env.JWT_SECRET;
 
 @Module({
   imports: [
