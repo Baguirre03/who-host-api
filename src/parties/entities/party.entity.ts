@@ -27,7 +27,7 @@ export class PartyEntity implements Party {
   @ApiProperty()
   status: $Enums.PartyStatus;
 
-  @ApiProperty({ type: UserEntity }) å;
+  @ApiProperty({ type: UserEntity })
   host?: UserEntity;
 
   @ApiProperty({ required: false, type: Array })
@@ -38,7 +38,7 @@ export class PartyEntity implements Party {
     if (host) {
       this.host = new UserEntity(host);
     }
-    if (members.length) {
+    if (members && members.length) {
       this.members.map((member) => new UserEntity(member));
     }
   }
