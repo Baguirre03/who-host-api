@@ -14,6 +14,7 @@ model User {
   description   String?
   lattitude     Float?
   longitude     Float?
+  address       String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   password      String

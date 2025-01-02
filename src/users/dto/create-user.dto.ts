@@ -41,6 +41,11 @@ export class CreateUserDto {
   @ApiProperty()
   longitude: number;
 
+  @IsNotEmpty()
+  @IsLongitude()
+  @ApiProperty()
+  address: string;
+
   @IsDate()
   @IsOptional()
   @ApiProperty()

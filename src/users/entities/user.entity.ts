@@ -25,6 +25,9 @@ export class UserEntity implements User {
   longitude: number;
 
   @ApiProperty()
+  address: string;
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
