@@ -7,6 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PartyStatus {
+  PLANNING
+  PLANNED
+  COMPLETED
+}
+
+enum PartyHostType {
+  CLOSEST
+  RANDOM
+  CHOOSE
+}
+
 model User {
   id            String   @id @unique @default(uuid())
   username      String   @unique
@@ -19,24 +31,26 @@ model User {
   updatedAt     DateTime @updatedAt
   password      String
   hostedParties Party[]  @relation("PartyHost")
+  partiesAdmin  Party[]  @relation("PartyAdmin")
   parties       Party[]  @relation("PartyMembers")
+
+  isAdmin Boolean @default(false)
 }
 
 model Party {
-  id          String       @id @unique @default(uuid())
+  id          String         @id @unique @default(uuid())
   name        String
   description String?
   time        DateTime
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
   hostId      String
-  status      PartyStatus? @default(PLANNING)
-  host        User         @relation("PartyHost", fields: [hostId], references: [id])
-  members     User[]       @relation("PartyMembers")
+  host        User?          @relation("PartyHost", fields: [hostId], references: [id])
+  hostType    PartyHostType? @default(CLOSEST)
+  status      PartyStatus?   @default(PLANNING)
+  adminId     String
+  admin       User           @relation("PartyAdmin", fields: [adminId], references: [id])
+  members     User[]         @relation("PartyMembers")
 }
 
-enum PartyStatus {
-  PLANNING
-  PLANNED
-  COMPLETED
-}
+

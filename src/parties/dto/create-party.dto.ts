@@ -49,6 +49,16 @@ export class CreatePartyDto {
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
+  adminId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  hostType: $Enums.PartyHostType;
+
+  @IsString()
+  @IsNotEmpty()
   @IsOptional()
   @ApiProperty({ required: false })
   status: $Enums.PartyStatus;

@@ -19,11 +19,20 @@ export class PartiesService {
     });
   }
 
-  leaveParty(id: string, user: UserEntity, userId: string) {
-    return this.prisma.party.update({
+  async leaveParty(id: string, user: UserEntity, userId: string) {
+    const party = await this.prisma.party.findUnique({
       where: { id },
-      data: { members: { disconnect: { id: user.id || userId } } },
+      include: { admin: true },
     });
+
+    if (party.admin.id === userId) {
+      throw new Error('Admin cannot leave the party, delete the party instead');
+    } else {
+      return this.prisma.party.update({
+        where: { id },
+        data: { members: { disconnect: { id: user.id || userId } } },
+      });
+    }
   }
 
   findAll() {

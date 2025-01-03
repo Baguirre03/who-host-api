@@ -27,6 +27,15 @@ export class PartyEntity implements Party {
   @ApiProperty()
   status: $Enums.PartyStatus;
 
+  @ApiProperty()
+  hostType: $Enums.PartyHostType;
+
+  @ApiProperty()
+  adminId: string;
+
+  @ApiProperty({ type: UserEntity })
+  admin?: UserEntity;
+
   @ApiProperty({ type: UserEntity })
   host?: UserEntity;
 
@@ -56,5 +65,7 @@ model Party {
   status      PartyStatus @default(PLANNING)
   host        User        @relation("PartyHost", fields: [hostId], references: [id])
   members     User[]      @relation("PartyMembers")
+  adminId     String
+  admin       User        @relation("PartyAdmin", fields: [adminId], references: [id])
 }
 */
