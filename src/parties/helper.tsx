@@ -47,7 +47,9 @@ function findClosestHost(party: Party & { members: User[] }) {
   let bestUser: User = party.members[0];
   let bestDistance = Infinity;
   for (let [user, distances] of mp.entries()) {
-    let sum = distances.reduce((a, b) => a + b, 0);
+    let sum = Math.round(
+      distances.reduce((a, b) => a + b, 0) / distances.length,
+    );
     if (sum < bestDistance) {
       bestUser = user;
       bestDistance = sum;
