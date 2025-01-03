@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsDate,
   IsLatitude,
   IsLongitude,
@@ -42,7 +43,6 @@ export class CreateUserDto {
   longitude: number;
 
   @IsNotEmpty()
-  @IsLongitude()
   @ApiProperty()
   address: string;
 
@@ -60,4 +60,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   @ApiProperty()
   password: string;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty()
+  isAdmin: boolean;
 }
