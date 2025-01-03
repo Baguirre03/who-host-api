@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePartyDto } from './dto/create-party.dto';
 import { UpdatePartyDto } from './dto/update-party.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PartiesService {
@@ -9,6 +10,20 @@ export class PartiesService {
 
   create(createPartyDto: CreatePartyDto) {
     return this.prisma.party.create({ data: createPartyDto });
+  }
+
+  joinParty(id: string, user: UserEntity) {
+    return this.prisma.party.update({
+      where: { id },
+      data: { members: { connect: { id: user.id } } },
+    });
+  }
+
+  leaveParty(id: string, user: UserEntity, userId: string) {
+    return this.prisma.party.update({
+      where: { id },
+      data: { members: { disconnect: { id: user.id || userId } } },
+    });
   }
 
   findAll() {
