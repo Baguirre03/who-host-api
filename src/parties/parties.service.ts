@@ -3,6 +3,7 @@ import { CreatePartyDto } from './dto/create-party.dto';
 import { UpdatePartyDto } from './dto/update-party.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserEntity } from 'src/users/entities/user.entity';
+import findHost, { findHostTypes } from './helper';
 
 @Injectable()
 export class PartiesService {
@@ -12,11 +13,20 @@ export class PartiesService {
     return this.prisma.party.create({ data: createPartyDto });
   }
 
-  joinParty(id: string, user: UserEntity) {
-    return this.prisma.party.update({
+  async joinParty(id: string, user: string) {
+    const party = await this.prisma.party.update({
       where: { id },
-      data: { members: { connect: { id: user.id } } },
+      data: { members: { connect: { id: user } } },
+      include: { members: true },
     });
+
+    let host: UserEntity = findHost(party, { type: party.hostType });
+    const newParty2 = await this.prisma.party.update({
+      where: { id },
+      data: { hostId: host.id },
+    });
+
+    return newParty2;
   }
 
   async leaveParty(id: string, user: UserEntity, userId: string) {
@@ -46,11 +56,29 @@ export class PartiesService {
     });
   }
 
-  update(id: string, updatePartyDto: UpdatePartyDto) {
-    return this.prisma.party.update({
+  async update(id: string, updatePartyDto: UpdatePartyDto) {
+    const { hostId, ...updateData } = updatePartyDto;
+
+    const party = await this.prisma.party.update({
       where: { id },
-      data: updatePartyDto,
+      data: updateData,
+      include: { members: true },
     });
+
+    let obj: findHostTypes = hostId
+      ? { type: party.hostType, memberId: hostId }
+      : { type: party.hostType };
+    let host: UserEntity = findHost(party, obj);
+    console.log('HOST', host);
+
+    const newParty2 = await this.prisma.party.update({
+      where: { id },
+      data: {
+        host: host ? { connect: { id: host.id } } : { disconnect: true },
+      },
+    });
+
+    return newParty2;
   }
 
   remove(id: string) {

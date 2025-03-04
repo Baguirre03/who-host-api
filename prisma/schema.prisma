@@ -41,7 +41,7 @@ model Party {
   id          String         @id @unique @default(uuid())
   name        String
   description String?
-  time        DateTime
+  time        DateTime?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   hostId      String

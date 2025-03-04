@@ -47,8 +47,8 @@ export class PartyEntity implements Party {
     if (host) {
       this.host = new UserEntity(host);
     }
-    if (members && members.length) {
-      this.members.map((member) => new UserEntity(member));
+    if (members && members.length > 0) {
+      this.members = members.map((member) => new UserEntity(member));
     }
   }
 }

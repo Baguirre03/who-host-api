@@ -8,6 +8,7 @@ import {
   Delete,
   NotFoundException,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -41,6 +42,19 @@ export class UsersController {
     return users.map((user) => new UserEntity(user));
   }
 
+  // GET /users/search?q=query
+
+  @Get('search')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: UserEntity, isArray: true })
+  async searchUsers(@Query('q') query: string) {
+    let users = await this.usersService.searchUsers(query);
+    if (users && users.length) {
+      return users.map((user) => new UserEntity(user));
+    }
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -48,7 +62,7 @@ export class UsersController {
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
     if (!user) {
-      throw new NotFoundException(`User with ID: ${id} does note exist`);
+      throw new NotFoundException(`User with ID: ${id} does not exist`);
     }
     return new UserEntity(user);
   }

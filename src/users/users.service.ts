@@ -19,7 +19,22 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: { parties: true, hostedParties: true, partiesAdmin: true },
+    });
+  }
+
+  async searchUsers(query: string) {
+    return this.prisma.user.findMany({
+      where: {
+        OR: [
+          { username: { contains: query, mode: 'insensitive' } },
+          { name: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+      select: { id: true, username: true, name: true },
+    });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

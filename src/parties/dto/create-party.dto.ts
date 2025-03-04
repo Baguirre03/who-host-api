@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { $Enums } from '@prisma/client';
 import {
   IsDate,
+  IsDateString,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -24,23 +25,20 @@ export class CreatePartyDto {
   @ApiProperty({ required: false })
   description?: string;
 
-  @IsDate()
-  @IsNotEmpty()
+  @IsDateString()
+  @IsOptional()
   @ApiProperty()
-  @ApiProperty()
-  time: Date;
+  time?: Date;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
-  @ApiProperty()
-  createdAt: Date;
+  createdAt?: Date;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
-  @ApiProperty()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @IsString()
   @IsNotEmpty()

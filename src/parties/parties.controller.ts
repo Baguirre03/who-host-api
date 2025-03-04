@@ -17,6 +17,11 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+
+interface basicUser {
+  id: string;
+}
+
 @Controller('parties')
 @ApiTags('parties')
 export class PartiesController {
@@ -30,13 +35,21 @@ export class PartiesController {
     return new PartyEntity(await this.partiesService.create(createPartyDto));
   }
 
-  @Post(':id')
+  @Patch(':id/members')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: PartyEntity })
-  async joinParty(@Param('id') id: string, @Body() user: UserEntity) {
-    return new PartyEntity(await this.partiesService.joinParty(id, user));
+  @ApiCreatedResponse({ type: PartyEntity })
+  async joinParty(@Param('id') id: string, @Body() userID: basicUser) {
+    return new PartyEntity(await this.partiesService.joinParty(id, userID.id));
   }
+
+  // @Post(':id')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  // @ApiOkResponse({ type: PartyEntity })
+  // async joinParty(@Param('id') id: string, @Body() user: UserEntity) {
+  //   return new PartyEntity(await this.partiesService.joinParty(id, user));
+  // }
 
   @Delete('/:id/remove/:userId')
   @UseGuards(JwtAuthGuard)

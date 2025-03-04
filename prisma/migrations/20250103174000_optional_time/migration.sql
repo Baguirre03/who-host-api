@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Party" ALTER COLUMN "time" DROP NOT NULL;

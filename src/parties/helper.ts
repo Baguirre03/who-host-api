@@ -1,19 +1,19 @@
 import { Party, User } from '@prisma/client';
 
 export interface findHostTypes {
-  type: 'closest' | 'random' | 'choose';
-  memberId?: string; // Optional member ID when type is 'choose'
+  type: 'CLOSEST' | 'RANDOM' | 'CHOOSE';
+  memberId?: string;
 }
 
 export default function findHost(
   party: Party & { members: User[] },
   findHostType: findHostTypes,
 ) {
-  if (findHostType.type == 'closest') {
+  if (findHostType.type == 'CLOSEST') {
     return findClosestHost(party);
-  } else if (findHostType.type == 'random') {
+  } else if (findHostType.type == 'RANDOM') {
     return findRandomHost(party);
-  } else if (findHostType.type == 'choose') {
+  } else if (findHostType.type == 'CHOOSE') {
     return findChooseHost(party, findHostType.memberId);
   }
 }
@@ -55,6 +55,8 @@ function findClosestHost(party: Party & { members: User[] }) {
       bestDistance = sum;
     }
   }
+
+  console.log(mp);
   return bestUser;
 }
 
